@@ -28,7 +28,6 @@ clock = pygame.time.Clock()
 
 
 class GameEntity:
-
     def __init__(self, position: Optional[Tuple[int, int]] = None,
                  color: Optional[Tuple[int, int, int]] = None) -> None:
         self.position = position or (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
@@ -45,7 +44,6 @@ class GameEntity:
 
 
 class Apple(GameEntity):
-
     def __init__(self) -> None:
         super().__init__(color=COLOR_APPLE)
         self.randomize_position()
@@ -59,7 +57,6 @@ class Apple(GameEntity):
 
 
 class Snake(GameEntity):
-
     def __init__(self) -> None:
         super().__init__(position=(GRID_COLS // 2 * CELL_SIZE, GRID_ROWS // 2 * CELL_SIZE),
                          color=COLOR_SNAKE)
