@@ -28,36 +28,49 @@ clock = pygame.time.Clock()
 
 
 class GameEntity:
+
+
     def __init__(self, position: Optional[Tuple[int, int]] = None,
                  color: Optional[Tuple[int, int, int]] = None) -> None:
+
         self.position = position or (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.color = color or (255, 255, 255)
 
     def draw(self, surface: pygame.Surface) -> None:
+
         pass
 
     def draw_cell(self, surface: pygame.Surface, position: Tuple[int, int],
                   color: Optional[Tuple[int, int, int]] = None) -> None:
+        """Отрисовка одной клетки объекта на игровом поле."""
         rect = pygame.Rect(position, (CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(surface, color or self.color, rect)
         pygame.draw.rect(surface, COLOR_BORDER, rect, 1)
 
 
 class Apple(GameEntity):
+
+
     def __init__(self) -> None:
+
         super().__init__(color=COLOR_APPLE)
         self.randomize_position()
 
     def randomize_position(self) -> None:
+
         self.position = (randint(0, GRID_COLS - 1) * CELL_SIZE,
                          randint(0, GRID_ROWS - 1) * CELL_SIZE)
 
     def draw(self, surface: pygame.Surface) -> None:
+
         self.draw_cell(surface, self.position)
 
 
 class Snake(GameEntity):
+
+
     def __init__(self) -> None:
+
         super().__init__(position=(GRID_COLS // 2 * CELL_SIZE, GRID_ROWS // 2 * CELL_SIZE),
                          color=COLOR_SNAKE)
         self.length: int = 1
@@ -66,10 +79,12 @@ class Snake(GameEntity):
         self.next_direction: Optional[Tuple[int, int]] = None
 
     def update_direction(self, new_direction: Tuple[int, int]) -> None:
+
         if new_direction != (self.direction[0] * -1, self.direction[1] * -1):
             self.next_direction = new_direction
 
     def move(self) -> None:
+
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
@@ -87,6 +102,7 @@ class Snake(GameEntity):
                 self.body_positions.pop()
 
     def draw(self, surface: pygame.Surface) -> None:
+
         for position in self.body_positions[:-1]:
             self.draw_cell(surface, position)
 
@@ -94,9 +110,11 @@ class Snake(GameEntity):
         self.draw_cell(surface, head_position, COLOR_SNAKE)
 
     def get_head_position(self) -> Tuple[int, int]:
+        """Получение позиции головы змейки."""
         return self.body_positions[0]
 
     def reset(self) -> None:
+
         self.length = 1
         self.body_positions = [self.position]
         self.direction = DIRECTION_RIGHT
@@ -104,6 +122,7 @@ class Snake(GameEntity):
 
 
 def handle_keys(snake: Snake) -> None:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -120,6 +139,7 @@ def handle_keys(snake: Snake) -> None:
 
 
 def main() -> None:
+
     snake = Snake()
     apple = Apple()
 
